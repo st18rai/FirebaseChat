@@ -5,18 +5,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.st18rai.firebasechat.R;
 import com.st18rai.firebasechat.ui.fragment.LoginFragment;
+import com.st18rai.firebasechat.ui.fragment.UsersListFragment;
 import com.st18rai.firebasechat.util.FragmentUtil;
 
 public class MainActivity extends AppCompatActivity {
+
+    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FragmentUtil.replaceFragment(getSupportFragmentManager(), new LoginFragment(), false);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (firebaseUser != null) {
+            FragmentUtil.replaceFragment(getSupportFragmentManager(), new UsersListFragment(), false);
+        } else {
+            FragmentUtil.replaceFragment(getSupportFragmentManager(), new LoginFragment(), false);
+        }
     }
 
     @Override
