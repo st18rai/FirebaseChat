@@ -127,5 +127,10 @@ public class UsersListFragment extends BaseFragment implements UsersRecyclerAdap
     @Override
     public void onItemClick(int position) {
 
+        Bundle bundle = new Bundle();
+        bundle.putString("userID", userList.get(position).getId());
+
+        FragmentUtil.replaceFragment(getFragmentManager(), new ChatFragment(), true, bundle);
+
     }
 }

@@ -7,4 +7,6 @@
     <string name="login">Login</string>
     <string name="name">Name</string>
     <string name="logout">Logout</string>
+    <string name="enter_message">Enter message …</string>
+    <string name="enter_message_toast">Enter message text!</string>
 </resources>
