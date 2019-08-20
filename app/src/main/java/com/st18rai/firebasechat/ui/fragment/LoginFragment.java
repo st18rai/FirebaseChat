@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -45,38 +44,25 @@ public class LoginFragment extends BaseFragment {
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // set title and toolbar state
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-    }
-
     @OnClick(R.id.register)
-    public void onRegisterClick() {
+    void onRegisterClick() {
         FragmentUtil.replaceFragment(getFragmentManager(), new RegistrationFragment(), true);
     }
 
     @OnClick(R.id.button_login)
-    public void onLoginClick() {
+    void onLoginClick() {
         String userEmail = email.getEditText().getText().toString();
         String userPassword = password.getEditText().getText().toString();
 
         if (TextUtils.isEmpty(userEmail) || TextUtils.isEmpty(userPassword)) {
-            Toast.makeText(getContext(), "Fill all fields!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show();
         } else {
             firebaseAuth.signInWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(task -> {
 
                 if (task.isSuccessful()) {
                     FragmentUtil.replaceFragment(getFragmentManager(), new UsersListFragment(), false);
                 } else {
-                    Toast.makeText(getContext(), "Login failed!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
                 }
             });
         }

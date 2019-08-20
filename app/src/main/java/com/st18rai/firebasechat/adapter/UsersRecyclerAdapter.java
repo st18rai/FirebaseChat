@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.st18rai.firebasechat.R;
+import com.st18rai.firebasechat.interfaces.Constants;
 import com.st18rai.firebasechat.model.User;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class UsersRecyclerAdapter extends RecyclerView.Adapter<UsersRecyclerAdap
 
     public void setData(List<User> data) {
         this.data = data;
+
         notifyDataSetChanged();
     }
 
@@ -57,7 +59,7 @@ public class UsersRecyclerAdapter extends RecyclerView.Adapter<UsersRecyclerAdap
 
         holder.name.setText(user.getUsername());
 
-        if (!user.getImageURL().equals("default")) {
+        if (!user.getImageURL().equals(Constants.DEFAULT)) {
             Glide.with(holder.getContext()).load(user.getImageURL()).into(holder.avatar);
         }
     }
@@ -87,7 +89,7 @@ public class UsersRecyclerAdapter extends RecyclerView.Adapter<UsersRecyclerAdap
             layout = v;
         }
 
-        public Context getContext() {
+        Context getContext() {
             return layout.getContext();
         }
     }

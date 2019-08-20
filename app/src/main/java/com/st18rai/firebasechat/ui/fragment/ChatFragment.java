@@ -2,7 +2,6 @@ package com.st18rai.firebasechat.ui.fragment;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.st18rai.firebasechat.R;
 import com.st18rai.firebasechat.adapter.ChatRecyclerAdapter;
+import com.st18rai.firebasechat.interfaces.Constants;
 import com.st18rai.firebasechat.model.Chat;
 import com.st18rai.firebasechat.model.User;
 import com.st18rai.firebasechat.ui.BaseFragment;
@@ -65,10 +65,8 @@ public class ChatFragment extends BaseFragment {
         ButterKnife.bind(this, view);
 
         if (getArguments() != null) {
-            userID = getArguments().getString("userID");
+            userID = getArguments().getString(Constants.USER_ID);
         }
-
-        loadUserInfo(userID);
 
         return view;
     }
@@ -90,6 +88,7 @@ public class ChatFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         initRecycler();
+        loadUserInfo(userID);
 
     }
 
@@ -106,7 +105,7 @@ public class ChatFragment extends BaseFragment {
 
     private void loadUserInfo(String userID) {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+        databaseReference = FirebaseDatabase.getInstance().getReference(Constants.USERS).child(userID);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -114,7 +113,7 @@ public class ChatFragment extends BaseFragment {
                 User user = dataSnapshot.getValue(User.class);
                 userName.setText(user.getUsername());
 
-                if (!user.getImageURL().equals("default")) {
+                if (!user.getImageURL().equals(Constants.DEFAULT)) {
                     Glide.with(getContext()).load(user.getImageURL()).into(avatar);
                 }
 
@@ -130,7 +129,7 @@ public class ChatFragment extends BaseFragment {
 
     private void readMessages(String myId, String userId) {
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Chats");
+        databaseReference = FirebaseDatabase.getInstance().getReference(Constants.CHATS);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -163,16 +162,16 @@ public class ChatFragment extends BaseFragment {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("sender", sender);
-        hashMap.put("receiver", receiver);
-        hashMap.put("message", message);
+        hashMap.put(Constants.SENDER, sender);
+        hashMap.put(Constants.RECEIVER, receiver);
+        hashMap.put(Constants.MESSAGE, message);
 
-        databaseReference.child("Chats").push().setValue(hashMap);
+        databaseReference.child(Constants.CHATS).push().setValue(hashMap);
 
     }
 
     @OnClick(R.id.button_send)
-    public void onSendButtonClick() {
+    void onSendButtonClick() {
 
         String msg = message.getText().toString();
 

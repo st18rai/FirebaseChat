@@ -8,18 +8,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.st18rai.firebasechat.R;
+import com.st18rai.firebasechat.interfaces.Constants;
 import com.st18rai.firebasechat.ui.BaseFragment;
 import com.st18rai.firebasechat.util.FragmentUtil;
 
@@ -73,23 +70,17 @@ public class RegistrationFragment extends BaseFragment {
         hideBackButton();
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-    }
-
     @OnClick(R.id.button_register)
-    public void onRegisterClick() {
+    void onRegisterClick() {
 
         String userName = name.getEditText().getText().toString();
         String userEmail = email.getEditText().getText().toString();
         String userPassword = password.getEditText().getText().toString();
 
-        if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(userEmail) || TextUtils.isEmpty(userPassword)){
-            Toast.makeText(getContext(), "Fill all fields!", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(userEmail) || TextUtils.isEmpty(userPassword)) {
+            Toast.makeText(getContext(), getResources().getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show();
         } else if (userPassword.length() < 6) {
-            Toast.makeText(getContext(), "Password must be at least 6 characters!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.password_warning), Toast.LENGTH_SHORT).show();
         } else {
             registerUser(userName, userEmail, userPassword);
         }
@@ -99,24 +90,24 @@ public class RegistrationFragment extends BaseFragment {
     private void registerUser(String name, String email, String password) {
 
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
+            if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 String userID = firebaseUser.getUid();
 
-                databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+                databaseReference = FirebaseDatabase.getInstance().getReference(Constants.USERS).child(userID);
 
                 HashMap<String, String> hashMap = new HashMap<>();
-                hashMap.put("id", userID);
-                hashMap.put("username", name);
-                hashMap.put("imageURL", "default");
+                hashMap.put(Constants.ID, userID);
+                hashMap.put(Constants.USERNAME, name);
+                hashMap.put(Constants.IMAGE_URL, Constants.DEFAULT);
 
                 databaseReference.setValue(hashMap).addOnCompleteListener(task1 -> {
-                    if (task1.isSuccessful()){
+                    if (task1.isSuccessful()) {
                         FragmentUtil.replaceFragment(getFragmentManager(), new UsersListFragment(), false);
                     }
                 });
             } else {
-                Toast.makeText(getContext(), "You can't register with this email or password!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.register_error), Toast.LENGTH_SHORT).show();
             }
         });
 

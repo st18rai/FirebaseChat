@@ -9,4 +9,8 @@
     <string name="logout">Logout</string>
     <string name="enter_message">Enter message …</string>
     <string name="enter_message_toast">Enter message text!</string>
+    <string name="fill_all_fields">Fill all fields!</string>
+    <string name="login_failed">Login failed!</string>
+    <string name="password_warning">Password must be at least 6 characters!</string>
+    <string name="register_error">You can\'t register with this email or password!</string>
 </resources>

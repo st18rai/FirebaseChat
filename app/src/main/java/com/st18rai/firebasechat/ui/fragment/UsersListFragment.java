@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.st18rai.firebasechat.R;
 import com.st18rai.firebasechat.adapter.UsersRecyclerAdapter;
+import com.st18rai.firebasechat.interfaces.Constants;
 import com.st18rai.firebasechat.model.User;
 import com.st18rai.firebasechat.ui.BaseFragment;
 import com.st18rai.firebasechat.util.FragmentUtil;
@@ -49,13 +50,6 @@ public class UsersListFragment extends BaseFragment implements UsersRecyclerAdap
         setHasOptionsMenu(true);
 
         return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // set title and toolbar state
     }
 
     @Override
@@ -128,7 +122,7 @@ public class UsersListFragment extends BaseFragment implements UsersRecyclerAdap
     public void onItemClick(int position) {
 
         Bundle bundle = new Bundle();
-        bundle.putString("userID", userList.get(position).getId());
+        bundle.putString(Constants.USER_ID, userList.get(position).getId());
 
         FragmentUtil.replaceFragment(getFragmentManager(), new ChatFragment(), true, bundle);
 

@@ -1,6 +1,5 @@
 package com.st18rai.firebasechat.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.st18rai.firebasechat.R;
@@ -19,7 +17,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapter.ChatHolder> {
 
@@ -48,18 +45,17 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
     @Override
     public ChatHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
+        View view;
+
         if (viewType == MSG_TYPE_LEFT) {
-            View view = LayoutInflater.from(parent.getContext())
+            view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_chat_left, parent, false);
-
-            return new ChatHolder(view);
-
         } else {
-            View view = LayoutInflater.from(parent.getContext())
+            view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_chat_right, parent, false);
-
-            return new ChatHolder(view);
         }
+
+        return new ChatHolder(view);
 
     }
 
@@ -68,7 +64,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
 
         Chat chat = data.get(position);
 
-        holder.message_text.setText(chat.getMessage());
+        holder.messageText.setText(chat.getMessage());
 
     }
 
@@ -92,7 +88,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
     static class ChatHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.message_text)
-        TextView message_text;
+        TextView messageText;
 
         private View layout;
 
@@ -100,10 +96,6 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
             super(v);
             ButterKnife.bind(this, v);
             layout = v;
-        }
-
-        public Context getContext() {
-            return layout.getContext();
         }
     }
 }
